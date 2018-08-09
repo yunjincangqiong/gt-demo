@@ -1,0 +1,18 @@
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    #container {
+        position: relative;
+        width: 800px;
+        height: 600px;
+        background-color: #999;
+        margin: 50px auto;
+    }
+
+    ._div {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+    }

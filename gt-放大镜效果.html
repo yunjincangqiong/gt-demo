@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        div.small {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            border: 1px solid red;
+            background: url(./images/small.jpg) no-repeat;
+            background-size: cover;
+        }
+
+        div.big {
+            position: absolute;
+            left: 420px;
+            top: 100px;
+            border: 1px solid yellow;
+            width: 400px;
+            height: 400px;
+            overflow: hidden;
+            display: none;
+        }
+
+        div.shadow {
+            width: 150px;
+            height: 150px;
+            background-color: rgba(150, 150, 150, .7);
+            position: absolute;
+            display: none;
+        }
+
+        div.big img {
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="small">
+        <div class="shadow"></div>
+    </div>
+    <div class="big">
+        <img src="./images/big.jpg" alt="图片" />
+    </div>
+    <script>
+        var small = document.querySelector( 'div.small' ),
+            big = document.querySelector( 'div.big' ),
+            shadow = document.querySelector( 'div.shadow' ),
+            img = document.querySelector( 'div.big img' );
+        small.onmouseover = function () {
+            shadow.style.display = 'block';
+            big.style.display = 'block';
+        }
+        small.onmousemove = function ( e ) {
+           //遮罩框相对于父元素的定位坐标
+           var pLeft = e.pageX - small.offsetLeft;
+           var pTop = e.pageY - small.offsetTop;
+           //遮罩框可移动距离
+           var moveWidth = small.offsetWidth - shadow.offsetWidth;
+           var moveHeight = small.offsetHeight - shadow.offsetHeight;
+           shadow.style.left = pLeft - shadow.offsetWidth/2 + 'px';
+           shadow.style.top = pTop - shadow.offsetHeight/2 + 'px';
+           //限制遮罩框的可移动范围
+           if( shadow.offsetLeft > moveWidth ) {
+                shadow.style.left = moveWidth + 'px';
+           }
+           if ( shadow.offsetLeft < 0 ) {
+                shadow.style.left = '0';
+           }
+           if ( shadow.offsetTop > moveHeight ) {
+                shadow.style.top = moveHeight + 'px';
+           }
+           if ( shadow.offsetTop < 0 ) {
+                shadow.style.top = '0';
+           }
+           //移动公式
+           //遮罩框移动距离/(遮罩框父元素宽高-遮罩框宽高)=放大图片移动距离/(放大图片父元素宽高-放大图片宽高)
+           img.style.left = ( big.offsetWidth - img.offsetWidth ) * shadow.offsetLeft / moveWidth + 'px';
+           img.style.top = ( big.offsetHeight - img.offsetHeight ) * shadow.offsetTop / moveHeight + 'px';
+        }
+        small.onmouseout = function () {
+            big.style.display = '';
+            shadow.style.display = '';
+        }
+    </script>
+</body>
+</html>

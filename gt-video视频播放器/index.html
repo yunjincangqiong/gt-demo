@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/font-awesome.min.css">
+  <style>
+    .container {
+      position: relative;
+      width: 640px;
+      height: 360px;
+      margin: 100px auto;
+      background: #000;
+    }
+
+    .container video {
+      width: 100%;
+      height: 100%;
+    }
+
+    .container .controls {
+      position: absolute;
+      left: 5%;
+      bottom: 20px;
+      width: 90%;
+      height: 40px;
+      background: rgba(0, 0, 0, .5);
+      border-radius: 6px;
+    }
+
+    .container .controls .tools {
+      position: absolute;
+      left: 16px;
+      top: 9px;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    .container .controls .duration {
+      position: absolute;
+      left: 40px;
+      top: 5px;
+      width: 60%;
+      height: 30px;
+      background: #555;
+      overflow: hidden;
+      border-radius: 6px;
+    }
+
+    .container .controls .duration .current-duration {
+      width: 0;
+      height: 30px;
+      background: red;
+    }
+
+    .container .controls .time {
+      position: absolute;
+      left: 68%;
+      top: 10px;
+      color: #fff;
+    }
+
+    /* .container .controls .time .time-current {}
+
+    .container .controls .time .time-all {} */
+
+    .container .controls .fullscreen {
+      position: absolute;
+      right: 16px;
+      top: 9px;
+      font-size: 22px;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <video src="./video/chrome.mp4" poster="./images/poster.jpg">
+      不支持video
+    </video>
+    <div class="controls">
+      <i class="fa fa-play tools"></i>
+      <div class="duration">
+        <div class="current-duration"></div>
+      </div>
+      <div class="time">
+        <span class="time-current">00:00:00</span> /
+        <span class="time-all">00:00:00</span>
+      </div>
+      <i class="fa fa-arrows-alt fullscreen"></i>
+    </div>
+  </div>
+
+  <script>
+    var video = document.querySelector('video');
+    var tools = document.querySelector('.controls .tools');
+    var duration = document.querySelector('.controls .duration');
+    var currentTime = document.querySelector('.controls .duration .current-duration');
+    var timeCurrent = document.querySelector('.time-current');
+    var timeAll = document.querySelector('.time-all');
+    var durationWidth = window.getComputedStyle(duration)
+      .width;
+    var fullscreen = document.querySelector('.fullscreen');
+    var allTime = 0;
+
+    window.onresize = function () {
+      console.log(1);
+    }
+    // 总时间处理
+    video.addEventListener('canplay', function () {
+      timeAll.innerHTML = time(this.duration);
+      allTime = this.duration;
+    })
+
+    // 播放暂停按钮
+    tools.addEventListener('click', function () {
+      if (video.paused) {
+        video.play();
+
+        tools.classList.remove('fa-play');
+        tools.classList.add('fa-pause');
+      } else {
+        video.pause();
+
+        tools.classList.remove('fa-pause');
+        tools.classList.add('fa-play');
+      }
+
+      // 当前播放进度滚动条与播放进度时间相同
+      video.addEventListener('timeupdate', function () {
+        currentTime.style.width = this.currentTime / this.duration * parseInt(durationWidth) + 'px';
+
+        // 当前播放时间处理
+        timeCurrent.innerHTML = time(this.currentTime);
+      })
+
+    })
+
+    // 滚动条拖动更改时间
+    duration.addEventListener('mousedown', function (e) {
+      mySetTimeAndWidth(e);
+      video.pause();
+      // tools.classList.remove('fa-pause');
+      // tools.classList.add('fa-play');
+      this.onmousemove = function (e) {
+        mySetTimeAndWidth(e);
+      }
+      document.onmouseup = function () {
+        duration.onmousemove = null;
+        video.play();
+        tools.classList.remove('fa-play');
+        tools.classList.add('fa-pause');
+        this.onmouseup = null;
+      }
+    })
+
+    // 点击更改当前播放时间
+    duration.addEventListener('click', function (e) {
+      mySetTimeAndWidth(e);
+    })
+
+    // 设置当前时间和进度条长度
+    function mySetTimeAndWidth(ee) {
+      currentTime.style.width = ee.offsetX + 'px';
+      var clickTime = ee.offsetX / parseInt(durationWidth) * allTime;
+      timeCurrent.innerHTML = time(clickTime);
+      video.currentTime = clickTime;
+    }
+
+    // 全屏显示
+    fullscreen.onclick = function () {
+      if (video.webkitRequestFullScreen) {
+        video.webkitRequestFullScreen();
+      } else if (video.mozRequestFullScreen) {
+        video.mozRequestFullScreen();
+      }
+      if (video.webkitRequestFullScreen) {
+        video.webkitRequestFullScreen();
+      } else if (video.mozRequestFullScreen) {
+        video.mozRequestFullScreen();
+      }
+    }
+
+    // 播放结束时, 初始化播放器
+    video.addEventListener('ended', function () {
+      this.currentTime = 0;
+    });
+
+    // 添加 0 
+    function add0(para) {
+      return para < 10 ? '0' + para : para;
+    }
+
+    // 时间格式化
+    function time(times) {
+      var hour = Math.floor(times / 3600);
+      var minute = Math.floor(times % 3600 / 60);
+      var second = Math.floor(times % 60);
+      hour = add0(hour);
+      minute = add0(minute);
+      second = add0(second);
+      return hour + ':' + minute + ':' + second;
+    }
+  </script>
+</body>
+
+</html>

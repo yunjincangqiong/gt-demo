@@ -1,0 +1,359 @@
+/*Created by macbook on 2017/10/12*/
+/*版心*/
+.wrap {
+    min-width: 320px;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+/*头部*/
+.header {
+    width: 100%;
+    max-width: 640px;
+    height: 40px;
+    position: fixed;
+    padding-left: 60px;
+    padding-right: 40px;
+}
+
+.header1 {
+    z-index: 1000;
+}
+
+.header .icon-logo {
+    display: block;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 56px;
+    height: 34px;
+    background: url("../images/sprites.png") no-repeat 0 -103px/200px 200px;
+}
+
+.header form {
+    width: 100%;
+    height: 40px;
+    position: relative;
+}
+
+.header form .icon-search {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background: url("../images/sprites.png") no-repeat -60px -109px/200px 200px;
+}
+
+.header form input {
+    width: 100%;
+    height: 30px;
+    margin: 5px 0;
+    line-height: 30px;
+    border-radius: 15px;
+    padding-left: 40px;
+}
+
+.header .login {
+    display: block;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 5px;
+    top: 0;
+    right: 0;
+    color: #fff;
+    font-size: 16px;
+}
+
+/*轮播图*/
+.banner {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.banner ul {
+    width: 1000%;
+    transform: translateX(-10%);
+    overflow: hidden;
+}
+
+.banner ul li {
+    width: 10%;
+    float: left;
+}
+
+.banner ul li a {
+    width: 100%;
+    display: block;
+}
+
+.banner ul li a img {
+    width: 100%;
+    /*清除图片的默认底部白边*/
+    display: block;
+}
+
+.banner .btns {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.banner .btns .btns-spans {
+    float: left;
+    width: 6px;
+    height: 6px;
+    margin-left: 10px;
+    background-color: transparent;
+    border-radius: 50%;
+    border: 1px solid #fff;
+}
+
+.banner .btns .btns-spans.select {
+    background-color: #fff;
+}
+
+/*分类商品*/
+.nav {
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 0 1px #333;
+    background-color: #fff;
+}
+
+.nav ul {
+    width: 100%;
+    overflow: hidden;
+}
+
+.nav ul li {
+    width: 25%;
+    float: left;
+    margin: 10px 0;
+}
+
+.nav ul li a {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.nav ul li a img {
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+}
+
+.nav ul li a p {
+    text-align: center;
+}
+
+/*商品*/
+.goods {
+    width: 100%;
+    padding: 0 5px;
+}
+
+.goods .second-kill {
+    width: 100%;
+    margin: 15px 0;
+    background-color: #fff;
+    overflow: hidden;
+    box-shadow: 0 0 3px #ccc;
+}
+
+.goods .second-kill .s-k {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    background-color: #fff;
+    font-size: 16px;
+}
+
+.goods .second-kill .s-k .icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+    background: url("../images/seckill-icon.png") no-repeat center/16px;
+    float: left;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.goods .second-kill .s-k .description {
+    float: left;
+    width: 80px;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 5px;
+    margin-left: 10px;
+    color: red;
+}
+
+.goods .second-kill .s-k .time-rev {
+    width: 140px;
+    float: left;
+}
+
+.goods .second-kill .s-k .time-rev .time {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    display: block;
+    color: #fff;
+    float: left;
+    background-color: #333;
+    margin-left: 3px;
+    margin-top: 7px;
+    text-align: center;
+}
+
+.goods .second-kill .s-k .time-rev .time:nth-child(3n) {
+    width: 6px;
+    background-color: transparent;
+    color: #333;
+}
+
+.goods .second-kill .s-k .more {
+    float: right;
+}
+
+.goods .second-kill ul {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.goods .second-kill ul li {
+    width: 33.3333%;
+    float: left;
+    text-align: center;
+}
+
+.goods .second-kill ul li a {
+    display: block;
+    width: 100%;
+    border-right: 1px solid #ccc;
+}
+
+.goods .second-kill ul li a:last-child {
+    border: none;
+}
+
+.goods .second-kill ul li a img {
+    display: block;
+    width: 70%;
+    margin: 0 15%;
+}
+
+.goods .second-kill ul li ins {
+    color: red;
+    text-decoration: none;
+    display: block;
+    margin: 5px 0;
+}
+
+.goods .second-kill ul li del {
+    color: #7a7a7a;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.goods .jd {
+    width: 100%;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: 0 0 3px #ccc;
+}
+
+.goods .jd .header {
+    width: 100%;
+    font-size: 15px;
+    height: 30px;
+    line-height: 30px;
+    font-weight: normal;
+    position: relative;
+    border-bottom: 1px solid #c8c8c8;
+    background-color: #fff;
+}
+
+.goods .jd .header::before {
+    content: "";
+    width: 3px;
+    height: 15px;
+    background-color: red;
+    position: absolute;
+    top: 8px;
+    left: 30px;
+}
+
+.goods .jd .imgs {
+    width: 100%;
+}
+
+.goods .jd .imgs a.left {
+    float: left;
+    width: 50%;
+    display: block;
+    border-right: 1px solid #c8c8c8;
+}
+
+.goods .jd .imgs a.left img {
+    width: 100%;
+    display: block;
+}
+
+.goods .jd .imgs a.right {
+    float: right;
+    width: 50%;
+    display: block;
+    height: 50%;
+    border-right: 1px solid #c8c8c8;
+}
+
+.goods .jd .imgs a.right:first-child {
+    border-bottom: 1px solid #c8c8c8;
+}
+
+.goods .jd .imgs a.right img {
+    width: 100%;
+    display: block;
+}
+
+.goods .jd .imgss a.right {
+    float: right;
+    width: 50%;
+    display: block;
+    border-right: 1px solid #c8c8c8;
+}
+
+.goods .jd .imgss a.left {
+    float: left;
+    width: 50%;
+    display: block;
+    height: 50%;
+    border-right: 1px solid #c8c8c8;
+}
+
+.goods .jd .imgss a.left:first-child {
+    border-bottom: 1px solid #c8c8c8;
+}
+
+.goods .jd .imgss a img {
+    width: 100%;
+    display: block;
+}
+
+.bb {
+    border-bottom: 1px solid #c8c8c8 !important;
+}
+
+.n-r {
+    border-right: none !important;
+}

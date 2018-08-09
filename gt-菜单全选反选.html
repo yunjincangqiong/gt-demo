@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        table {
+            margin: 0 auto;
+            text-align: center;
+            border-collapse: collapse;
+        }
+        thead tr:first-child {
+            background-color: #789;
+        }
+        th, td {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <table border="1">
+        <caption style="caption-side: side;">娱乐</caption>
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" class="cAll">
+                </th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input type="checkbox" name="person" class="person">
+                </td>
+                <td>账单</td>
+                <td>男</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="person" class="person">
+                </td>
+                <td>安师大 </td>
+                <td>女</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="person" class="person">
+                </td>
+                <td>都发过</td>
+                <td>男</td>
+                <td>56</td>
+            </tr>
+        </tbody>
+    </table>
+    <button id="btn">反选</button>
+    <script>
+        var cAll = document.querySelector( '.cAll' ),
+            person = document.querySelectorAll( '.person' );
+        // 一键全选按钮
+        cAll.onchange = function () {
+            // qsa 选择器有 forEach 方法
+            person.forEach( (item) => {
+                item.checked = this.checked;
+            });
+        }
+        // 子按钮
+        person.forEach( ( item ) => {
+            item.onchange = function () {
+                var index = 0;
+                //判断是否全选
+                for ( var i = 0; i < person.length; i++) {
+                   index += person[i].checked == true ? 1 : 0;
+                }
+                cAll.checked = index == 3 ? true : false;
+            }
+        } )
+        // 反转按钮
+        btn.onclick =  function () {
+            var index = 0;
+            person.forEach( ( item ) => {
+                item.checked = !item.checked;
+                // 判断是否全选
+                // 细节 选择框在参与计算时状态已经稳定
+                index += item.checked == true ? 1 : 0;
+            });
+            cAll.checked = index == 3 ? true : false;
+        }
+    </script>
+
+    
+
+</body>
+</html>

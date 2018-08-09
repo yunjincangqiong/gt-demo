@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    ul {
+      list-style-type: none;
+    }
+
+    ul::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    ul li {
+      float: left;
+      width: 40px;
+      height: 20px;
+      background-color: red;
+      color: #fff;
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <ul>
+    <li data-url="home">首页</li>
+    <li data-url="list">列表</li>
+  </ul>
+  <div class="container">
+    <h2>Home</h2>
+  </div>
+  <script src="./assets/vendors/jquery/jquery.js"></script>
+  <script>
+    $(function () {
+      $('ul').on('click', 'li', function () {
+        var url = $(this).data('url');
+
+        if (url === history.state) {
+          return;
+        }
+        history.pushState(url, null, url + '.html');
+        if (url === 'home') {
+          $.ajax({
+            url: './assets/html/home.html',
+            success : function (data) {
+              $('.container').html(data);
+            }
+          })
+        } else if (url === 'list') {
+          $.ajax({
+            url: './assets/html/list.html',
+            success: function (data) {
+              $('.container').html(data);
+            }
+          })
+        }
+        window.onpopstate = function (e) {
+          var url = e.state;
+          if (!url) {
+            return;
+          }
+          if (url === 'home') {
+            console.log(1);
+            $.ajax({
+              url: './assets/html/home.html',
+              success: function (data) {
+                $('.container').html(data);
+              }
+            })
+          } else if (url === 'list') {
+            console.log(2);
+            $.ajax({
+              url: './assets/html/list.html',
+              success: function (data) {
+                $('.container').html(data);
+              }
+            })
+          }
+        }
+      })
+    });
+  </script>
+</body>
+</html>

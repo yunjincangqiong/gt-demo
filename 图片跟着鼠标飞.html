@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 2000px;
+    }
+
+    img {
+      position: absolute;
+      border: 1px solid red;
+      margin-left: 100px;
+      margin-top: -250px;
+    }
+  </style>
+</head>
+<body>
+<img src="images/tianshi.gif" alt="好美啊,吹弹可破" id="im"/>
+<script src="common.js"></script>
+<script>
+  //鼠标在body中移动
+  document.onmousemove = function (e) {
+    e = window.event || e;//兼容代码
+//    my$("im").style.left=e.clientX+"px";
+//    my$("im").style.top=e.clientY+"px";
+    //e.pageX和e.pageY是相对于页面左上角的真正的坐标
+    //e.pageX和e.pageY在IE8中不支持
+//    my$("im").style.left = e.pageX + "px";
+//    my$("im").style.top = e.pageY + "px";
+
+    my$("im").style.left = e.pageX-100+ "px";
+    my$("im").style.top = e.pageY+250 + "px";
+  };
+</script>
+
+</body>
+</html>

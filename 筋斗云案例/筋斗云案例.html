@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        ul {
+            list-style: none
+        }
+
+        body {
+            background-color: #333;
+        }
+
+        .nav {
+            width: 800px;
+            height: 42px;
+            margin: 100px auto;
+            background: url(images/rss.png) right center no-repeat;
+            background-color: #fff;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .nav li {
+            width: 83px;
+            height: 42px;
+            text-align: center;
+            line-height: 42px;
+            float: left;
+            cursor: pointer;
+        }
+
+        .nav span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 83px;
+            height: 42px;
+            background: url(images/cloud.gif) no-repeat;
+        }
+
+        ul {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <span id="cloud"></span>
+    <ul id="navBar">
+        <li>北京校区</li>
+        <li>上海校区</li>
+        <li>广州校区</li>
+        <li>深圳校区</li>
+        <li>武汉校区</li>
+        <li>关于我们</li>
+        <li>联系我们</li>
+        <li>招贤纳士</li>
+    </ul>
+</div>
+<script src="common.js"></script>
+<script>
+    //缓动动画函数(变速)
+    function animate(element, target) {
+        clearInterval(element.timeId);
+        element.timeId = setInterval(function () {
+            //获取元素的当前的位置
+            var current = element.offsetLeft;
+            //每次移动的步数
+            var step = (target - current) / 10;
+            step = step > 0 ? Math.ceil(step) : Math.floor(step);
+            //移动后的距离
+            current += step;
+            element.style.left = current + "px";
+            if (current == target) {
+                //清理定时器
+                clearInterval(element.timeId);
+            }
+            //家一行代码测试用---这几天结束后,再删除
+            console.log("目标位置:" + target + ",当前位置:" + current + ",每次移动步数" + step);
+        }, 10);
+    }
+
+    var lis = my$("navBar").children;
+    for (var i = 0; i < lis.length; i++) {
+        lis[i].onmousemove = mousemoveHandle;
+        lis[i].onclick = clickHandle;
+        lis[i].onmouseout = mouseoutHandle;
+    }
+    function mousemoveHandle() {
+        animate(my$("cloud"), this.offsetLeft);
+    }
+    //存贮点击时的位置
+    var last = 0;
+    function clickHandle() {
+        last = this.offsetLeft;
+    }
+    function mouseoutHandle() {
+        animate(my$("cloud"), last);
+    }
+
+//JQuery实现
+//    $(function () {
+//        var last= 0;
+//        $("#navBar li").mouseover(function () {
+//            var left = $(this)[0].offsetLeft;
+//            $("#cloud").animate({left:left+"px"},500);
+//        }).click(function () {
+//            last = $(this)[0].offsetLeft;
+//        }).mouseout(function () {
+//            $("#cloud").animate({left:last+"px"},500);
+//        });
+//    });
+</script>
+</body>
+</html>

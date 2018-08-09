@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        div {
+            width: 100px;
+            height: 100px;
+            background-color: #123;
+            border: 50px solid red;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="dv"></div>
+    <script>
+        //核心鼠标平移和块的平移轨迹相同
+        var dv = document.querySelector( '#dv' );
+        dv.onmousedown = function ( e ) {
+            var pageX = e.pageX;
+            var pageY = e.pageY;
+            //给文档添加事件而不是盒子; 为了解决鼠标快速移动时脱标产生的bug 
+            document.onmousemove = function ( e ) {
+                dv.style.left = dv.offsetLeft + e.pageX - pageX + 'px';
+                dv.style.top = dv.offsetTop + e.pageY - pageY + 'px';
+                //将上次的鼠标位置记录
+                pageX = e.pageX;
+                pageY = e.pageY;
+            }
+        } 
+        dv.onmouseup = function () {
+            document.onmousemove = null;
+        }
+    </script>
+</body>
+</html>

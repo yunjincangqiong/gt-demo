@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script>
+
+    //var str="https://www.baidu.com/s?wd=iphone8&rsv_spt=1&rsv_iqid=0x83273a440021eca7&issp=1&f=8&rsv_bp=0";
+
+    function getUrlQuery(str) {
+
+      //先获取字符串中的?的位置
+      var index=str.indexOf("?");
+      //截取?后面的所有的字符串内容
+      str=str.substr(index+1);
+      //wd=iphone8&rsv_spt=1&rsv_iqid=0x83273a440021eca7&issp=1&f=8&rsv_bp=0
+      //console.log(str);
+      var arr=str.split("&");
+      var obj={};
+      //遍历数组,获取数组中的每个元素
+      for(var j=0;j<arr.length;j++){
+        //console.log(arr[j]);
+        //再次截取每个元素中的=
+        var tempArr=arr[j].split("=");
+        obj[tempArr[0]]=tempArr[1];
+      }
+      return obj;
+    }
+
+    //var json=getUrlQuery(str);
+
+    var json=getUrlQuery(location.href);
+
+    //console.log(obj);
+    for(var key in json){
+      console.log(key+"===="+json[key]);
+    }
+
+//    console.log(arr);
+//
+//    属性是键
+//    属性值是该键对应的值
+
+  </script>
+</head>
+<body>
+
+
+</body>
+</html>

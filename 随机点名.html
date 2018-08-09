@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>点名系统</title>
+    <!--<script src="common.js"></script>-->
+    <script>
+        function my$(id){
+            return document.getElementById(id);
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #main {
+            width: 1250px;
+            height: 600px;
+            margin: 0 auto;
+            margin-top: 5px;
+            border: 1px solid red;
+            position: relative;
+        }
+
+        .box {
+            width: 80px;
+            height: 80px;
+            background-color: #aaa;
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            text-align: center;
+        }
+
+        .p {
+            font-size: 20px;
+            font-weight: bold;
+            display: block;
+            /*完美居中方案*/
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /*向左上角移动自身大小的一半*/
+            transform: translate(-50%, -50%);
+        }
+
+        #butBox {
+            width: 490px;
+            height: 40px;
+            margin: 0 auto;
+        }
+
+        input {
+            width: 80px;
+            height: 40px;
+            margin: 0 40px;
+        }
+    </style>
+</head>
+<body>
+<div id="main"></div>
+<div id="butBox">
+    <input type="button" id="btn1" value="开始"/>
+    <input type="button" id="btn2" value="选人"/>
+    <input type="button" id="btn3" value="重置"/>
+</div>
+<script>
+    //定义两个全局变量 用于判断按钮1,2是否可点击
+    var bo1 = true;
+    var bo2 = true;
+    //获取选名框
+    var main = my$("main");
+    //定义姓名数组
+    var arrName = ["1=李若男", "2=张雯", "3=陈孟孟", "4=薛凯", "5=周欣", "6=范佳伟", "7=王启明", "8=申万胜", "9=张银萍", "10=张峰", "11=王一丹", "12=陈刘伟", "13=凌秋娜", "14=张丽波", "15=王擎清", "16=王亚如", "17=曹向向", "18=李欣宇", "19=雷家琦", "20=李卓", "21=田文领", "22=李云松", "23=王瑞", "24=赵策", "25=李嘉鹏", "26=高文凯", "27=彭真", "28=张维维", "29=唐帅", "30=吕丽翔", "31=张曼玉", "32=张云晓", "33=朱先强", "34=吴俊伟", "35=朱玉双", "36=蒋忠宇", "37=尚述鹏", "38=刘巍巍", "39=曹明雪", "40=肜京", "41=徐清", "42=单志彦", "43=李旭辉", "44=崔铭", "45=李鑫", "46=刘莹", "47=黄乾", "48=张莹", "49=赵琦", "50=代腾腾", "51=张慧杰", "52=王谊超", "53=杨明阳", "54=张金婷", "55=李洋洋", "56=石志鹏", "57=黄金龙", "58=高健超", "59=蔡黔勇", "60=杨晓慧", "61=邓起伟", "62=关子健", "63=项毅", "64=刘贤", "65=张贺娟", "66=关涛", "67=牛小林", "68=刘鑫", "69=宋莹", "70=张发发", "71=陈学丽", "72=宋立娟", "73=王菲", "74=卢鹏"];
+    //创建全局函数空对象
+    var obj = {};
+    //处理数组数组变成对象存储
+    for (var i = 0; i < arrName.length; i++) {
+        var key = arrName[i].split("=");
+        obj[key[0]] = key[1];
+    }
+    //选名开始按钮
+    my$("btn1").onclick = function () {
+        if (bo1 == true) {
+            //循环遍历数组
+            for (var i = 0; i < arrName.length; i++) {
+                //创建装载名字的小圆
+                var div = document.createElement("div");
+                //创建p标签
+                var p = document.createElement("p");
+                //添加类样式
+                div.className = "box";
+                //添加自定义属性
+                div.setAttribute("index", i + 1);
+                div.setAttribute("name", obj[i + 1]);
+                //添加小圆名到相应小p中
+                p.innerHTML = div.getAttribute("name");
+                //设置类样式
+                p.className = "p";
+                //==========================有时配色不太好=============================
+                //设置小p字体颜色
+                p.style.color = getColor();
+                //设置小圆背景颜色
+                div.style.backgroundColor = getColor();
+                //==========================有时配色不太好==============================
+                //添加到小圆中
+                div.appendChild(p);
+                //添加到选名框中
+                main.appendChild(div);
+                //获取main和小圆宽差
+                var spaceWidth = main.offsetWidth - div.offsetWidth;
+                //获取main和小圆高差
+                var spaceHeight = main.offsetHeight - div.offsetHeight;
+                //创建初始随机位置
+                var suiLeft = parseInt(Math.random() * (spaceWidth));
+                var suiTop = parseInt(Math.random() * (spaceHeight));
+                //获取随机位置
+                div.style.top = suiTop + "px";
+                div.style.left = suiLeft + "px";
+                //移动小圆
+                divMove(div, spaceWidth, spaceHeight);
+            }
+        }
+        //不能继续点击
+        bo1 = false;
+    };
+    //移动函数
+    function divMove(element, movewidth, moveheight) {
+        element.timer = setInterval(move, 10);
+        //横向每次移动距离
+        var stepX = 4;
+        //纵向每次移动距离
+        var stepY = 4;
+        //移动函数
+        function move() {
+            //获取当前距离框的位置
+            var currentX = element.offsetLeft;
+            var currentY = element.offsetTop;
+            //判断条件  反向运行
+            if (element.getAttribute("index") % 2 == 0) {
+                currentX += stepX;
+                currentY += stepY;
+                if (currentX <= 0) {
+                    stepX = 3;
+                } else if (currentX >= movewidth) {
+                    stepX = -3;
+                }
+                if (currentY <= 0) {
+                    stepY = 3;
+                } else if (currentY >= moveheight) {
+                    stepY = -3;
+                }
+            } else {
+                currentX -= stepX;
+                currentY -= stepY;
+                if (currentX <= 0) {
+                    stepX = -3;
+                } else if (currentX >= movewidth) {
+                    stepX = 3;
+                }
+                if (currentY <= 0) {
+                    stepY = -3;
+                } else if (currentY >= moveheight) {
+                    stepY = 3;
+                }
+            }
+            element.style.left = currentX + "px";
+            element.style.top = currentY + "px";
+        }
+    }
+    //选人函数
+    my$("btn2").onclick = function () {
+        if (bo2 == true) {
+            //产生随机数
+            var sui = Math.ceil(Math.random() * arrName.length);
+            //获取main中所有的小圆
+            var divs = main.getElementsByTagName("div");
+            for (var k = 0; k < divs.length; k++) {
+                var index = divs[k].getAttribute("index");
+                //判断随机数 与 那个小圆相等
+                if (sui == index) {
+                    //============================================
+                    divs[k].style.backgroundColor = "darkorange";
+                    //================================================
+                } else {
+                    setOpacity(divs[k]);
+                }
+            }
+        }
+        bo2 = false;
+    };
+    //重置函数
+    my$("btn3").onclick = function () {
+        //恢复按钮1,2可点击状态
+        bo1 = true;
+        bo2 = true;
+        //清楚main中所有元素
+        main.innerHTML = "";
+    };
+    //    创建随机颜色
+    function getColor() {
+        var str = "#";
+        for (var a = 0; a < 6; a++) {
+            //产生0-15之间的随机数
+            var num = Math.floor(Math.random() * 16);
+            switch (num) {
+                case 10 :
+                    num = "a";
+                    break;
+                case 11 :
+                    num = "b";
+                    break;
+                case 12 :
+                    num = "c";
+                    break;
+                case 13 :
+                    num = "d";
+                    break;
+                case 14 :
+                    num = "e";
+                    break;
+                case 15 :
+                    num = "f";
+                    break;
+            }
+            str += num;
+        }
+        return str;
+    }
+    /**
+     * 获取元素的任意属性
+     * @param element 元素
+     * @param attr 属性
+     * @returns {*} 返回属性值
+     */
+    function getStyle(element, attr) {
+        return window.getComputedStyle ? window.getComputedStyle(element, null)[attr] : element.currentStyle[attr];
+    }
+    /**
+     * 透明化函数
+     * @param element 元素
+     */
+    function setOpacity(element) {
+        clearInterval(element.timeId);
+        element.timeId = setInterval(function () {
+            //获取元素当前的opacity值
+            var current = getStyle(element, "opacity");
+            //扩大100倍 利于计算
+            current *= 100;
+            var target = 0;
+            //每次减少的值 当前剩余距离的1/10
+            var step = (target - current) / 10;
+            step = Math.floor(step);
+            //移动后的距离
+            current += step;
+            element.style.opacity = current / 100;
+            //当元素opacity为0时清除定时器
+            if (current == 0) {
+                clearInterval(element.timeId);
+                //移除当前透明小圆
+                main.removeChild(element);
+            }
+        }, 70);
+    }
+</script>
+</body>
+</html>

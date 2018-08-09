@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<style type="text/css">
+    #dv {
+        width: 300px;
+        height: 200px;
+        position: absolute;
+        left: 300px;
+        top: 100px;
+    }
+
+    .strengthLv0 {
+        height: 6px;
+        width: 120px;
+        border: 1px solid #ccc;
+        padding: 2px;
+    }
+
+    #dv div.strengthLv1 {
+        background: red;
+        height: 6px;
+        width: 40px;
+        border: 1px solid #ccc;
+        padding: 2px;
+    }
+
+    div.strengthLv2 {
+        background: orange;
+        height: 6px;
+        width: 80px;
+        border: 1px solid #ccc;
+        padding: 2px;
+    }
+
+    div.strengthLv3 {
+        background: green;
+        height: 6px;
+        width: 120px;
+        border: 1px solid #ccc;
+        padding: 2px;
+    }
+</style>
+<body>
+<div id="dv">
+    <label for="pwd">密码</label>
+    <input type="text" id="pwd" maxlength="16"><!--课外话题-->
+    <div>
+        <em>密码强度：</em>
+        <em id="strength"></em>
+
+        <div id="strengthLevel" class="strengthLv0"></div>
+    </div>
+</div>
+<script>
+    function my$(id) {
+        return document.getElementById(id);
+    }
+    my$("pwd").onkeyup = function () {
+        var sum = this.value.length >= 6 ? getLel(this.value) : 0;
+        my$("strengthLevel").className = "strengthLv" + sum;
+    };
+    function getLel(str) {
+        var lel = 0;
+        if (/\d+/.test(str)) {
+            lel++;
+        }
+        if (/[a-zA-Z]+/.test(str)) {
+            lel++;
+        }
+        if (/\W|_+/.test(str)) {
+            lel++;
+        }
+        return lel;
+    }
+</script>
+</body>
+</html>

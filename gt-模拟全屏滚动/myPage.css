@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#myPage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#myPage .page {
+  width: 100%;
+  height: 100%;
+  line-height: 100%;
+  font-size: 100px;
+  text-align: center;
+}
+
+#myPage .pageNav {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: 500px;
+  transform: translateY(-50%);
+}
+
+#myPage .pageNav .pageNavBar {
+  list-style: none;
+}
+
+#myPage .pageNav .pageNavBar li {
+  width: 15px;
+  height: 15px;
+  margin: 5px 0;
+  border-radius: 50%;
+  border: 2px solid #000;
+}
+
+.pageNav .pageNavBar li.active {
+  background-color: rgb(65, 122, 18);
+}

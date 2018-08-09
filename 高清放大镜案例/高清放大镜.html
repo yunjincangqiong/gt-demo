@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>哈哈</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .box {
+      width: 350px;
+      height: 350px;
+      margin: 100px;
+      border: 1px solid #ccc;
+      position: relative;
+    }
+
+    .big {
+      width: 400px;
+      height: 400px;
+      position: absolute;
+      top: 0;
+      left: 360px;
+      border: 1px solid #ccc;
+      overflow: hidden;
+      display: none;
+    }
+
+    .mask {
+      width: 175px;
+      height: 175px;
+      background: rgba(255, 255, 0, 0.4);
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      cursor: move;
+      display: none;
+    }
+
+    .small {
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+<div class="box" id="box">
+  <div class="small"><!--小层-->
+    <img src="images/small.png" width="350" alt=""/>
+    <div class="mask"></div><!--遮挡层-->
+  </div><!--小图-->
+  <div class="big"><!--大层-->
+    <img src="images/big.jpg" width="800" alt=""/><!--大图-->
+  </div><!--大图-->
+</div>
+<!--导入外部的js文件-->
+<script src="common.js"></script>
+<script>
+
+  //把最外面的div获取
+  var box = my$("box");
+  //获取小层
+  var small = box.children[0];
+  //获取遮挡层
+  var mask = small.children[1];
+  //获取大图的div
+  var big = box.children[1];
+  //大图
+  var bigImg = big.children[0];
+
+  //鼠标进入和离开事件
+  box.onmouseover = function () {
+    mask.style.display = "block";
+    big.style.display = "block";
+  };
+  box.onmouseout = function () {
+    mask.style.display = "none";
+    big.style.display = "none";
+  };
+  //鼠标在小图的小层上移动
+  small.onmousemove = function (e) {
+    //设置遮挡层的left和top等于clientX和clientY
+    //设置鼠标在遮挡层的中间显示(横坐标和纵坐标)
+    var left = e.clientX - mask.offsetWidth / 2;
+    var top = e.clientY - mask.offsetHeight / 2;
+    left = left - 100;//处理margin的问题
+    top = top - 100;//处理margin的问题
+    //处理遮挡层坐标和上面的最小值(范围,设置遮挡层不会跑出去)
+    left = left < 0 ? 0 : left;
+    top = top < 0 ? 0 : top;
+    //最大值的范围的处理
+    left = left > small.offsetWidth - mask.offsetWidth ? small.offsetWidth - mask.offsetWidth : left;
+    top = top > small.offsetHeight - mask.offsetHeight ? small.offsetHeight - mask.offsetHeight : top;
+    mask.style.left = left + "px";
+    mask.style.top = top + "px";
+    //遮挡层的移动距离/大图的移动距离=遮挡层的最大移动距离/大图的最大移动距离
+    //大图的移动距离=遮挡层的移动距离*大图的最大移动距离/遮挡层的最大移动距离
+    //求出大图的最大移动距离=大图的宽-大层的宽
+    var bigMaxMove = bigImg.offsetWidth - big.offsetWidth;
+    //var maskMaxMove=small.offsetWidth-mask.offsetWidth;
+    //大图横向移动
+    var marginLeft = left * bigMaxMove / (small.offsetWidth - mask.offsetWidth);
+    //大图纵向移动
+    var marginTop = top * bigMaxMove / (small.offsetWidth - mask.offsetWidth);
+    //设置大图的移动
+    bigImg.style.marginLeft = -marginLeft + "px";
+    bigImg.style.marginTop = -marginTop + "px";
+  };
+
+
+</script>
+
+</body>
+</html>

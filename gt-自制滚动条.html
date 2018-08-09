@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            width: 300px;
+            height: 500px;
+            border: 1px solid red;
+            margin: 100px;
+            position: relative;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .container .text {
+            width: 290px;
+            position: absolute;
+        }
+
+        .container .bar {
+            width: 10px;
+            height: 500px;
+            background-color: #aaa;
+            position: absolute;
+            left: 290px;
+            top: 0;
+        }
+
+        .container .bar .moveBar {
+            width: 10px;
+            height: 100px;
+            background-color: #666;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text">----你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥----你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥你说啥----</div>
+        <div class="bar">
+            <div class="moveBar"></div>
+        </div>
+    </div>
+    <script>
+        var moveBar = document.querySelector( '.moveBar' ),
+            bar = document.querySelector( '.bar' ),
+            textBox = document.querySelector( '.text' ),
+            container = document.querySelector( '.container' );
+        moveBar.onmousedown = function ( e ) {
+            var pageY = e.pageY;
+            //获取滚动条的上下移动空间高度
+            var moveHeight = bar.offsetHeight - moveBar.offsetHeight;
+            //解决鼠标快速移动脱标产生的问题
+            document.onmousemove = function ( e ) {
+                moveBar.style.top = e.pageY - pageY + 'px';
+                if ( moveBar.offsetTop < 0 ) {
+                    moveBar.style.top = '0';
+                }
+                if ( moveBar.offsetTop > moveHeight ) {
+                    moveBar.style.top = moveHeight + 'px';
+                }
+                //公式 文本移动/(文本框高度-容器高度) = 滚动条移动/(滚动条容器高度-滚动条高度)
+                textBox.style.top = - ( moveBar.offsetTop * ( textBox.offsetHeight - container.offsetHeight ) / moveHeight ) + 'px';
+            }
+        }
+        moveBar.onmouseup = function () {
+            document.onmousemove = null;
+        }
+    </script>
+</body>
+</html>

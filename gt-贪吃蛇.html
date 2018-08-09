@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="./css/style.css" /> -->
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        #container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            border: 1px solid red;
+            margin: 50px auto;
+            margin-bottom: 0; 
+        }
+
+        .dv {
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <!-- <script src="./js/snake.js"></script> -->
+    <!-- <script src="./js/app.js"></script> -->
+    <script>
+        var container = document.querySelector( '#container' );
+        function Snake ( map ) {
+            this.width = 20;
+            this.height = 20;
+            this.color = 'red';
+            this.length = 3;
+            this.head = '';
+            this.body = [];
+            this.foot = '';
+            this.snake = [];
+            //向右移动 上右下左 0 1 2 3
+            this.dir = 1;
+            //初始坐标
+            this.x = 5;
+            this.y = 5;
+            //坐标上限
+            this.maxX = map.offsetWidth / this.width - 1;
+            this.maxY = map.offsetHeight / this.height - 1;
+        }
+
+        //蛇初始化
+        Snake.prototype.init = function ( map ) {
+            this.head = document.createElement( 'div' );
+            this.head.className = 'dv';
+            this.head.style.backgroundColor = 'red';
+            this.head.style.left = 5 * this.width + 'px';
+            this.head.style.top = 5 * this.height + 'px';
+            this.body = [document.createElement( 'div' )];
+            this.body[0].className = 'dv';
+            this.body[0].style.backgroundColor = '#999';
+            this.body[0].style.left = (this.x - 1) * this.width + 'px';
+            this.body[0].style.top = 5 * this.width + 'px';
+            this.foot = document.createElement( 'div' );
+            this.foot.className = 'dv';
+            this.foot.style.backgroundColor = '#999';
+            this.foot.style.left = (this.x - 2) * this.width + 'px';
+            this.foot.style.top = 5 * this.height + 'px';
+            this.snake = [this.head, this.body, this.foot];
+            add( this.snake, map );
+        }
+
+        //蛇移动键盘控制
+        //左上右下 37 38 39 40
+        Snake.prototype.move = function () {
+            var that = this;
+            //判断移动方向
+            document.onkeydown = function ( e ) {
+                //向右或左移动
+                if ( that.dir == 1 || that.dir == 3) {
+                    if ( e.keyCode == 38 ) {
+                        that.dir = 0;
+                    } 
+                    if ( e.keyCode == 40 ) {
+                        that.dir = 2;
+                    } 
+                }
+                //向上或下移动
+                if ( that.dir == 0 || that.dir == 2 ) {
+                    if ( e.keyCode == 37 ) {
+                        that.dir = 3;
+                    } 
+                    if ( e.keyCode == 39 ) {
+                        that.dir = 1;
+                    }
+                }
+            }
+        }
+
+        //蛇移动
+        Snake.prototype.sMove = function( map, Food ) {
+            var timer = setInterval( move ,100 );
+            var that = this;
+            function move() {
+                switch ( that.dir ) {
+                    //向上
+                    case 0:
+                    that.y--;break;
+                    //向右
+                    case 1:
+                    that.x++;break;
+                    //向下
+                    case 2:
+                    that.y++;break;
+                    //向左
+                    case 3:
+                    that.x--;break;
+                }
+                //尾变成头,头变成身体第一个,身体最后一个变成尾;
+                that.foot.style.top = that.y * that.height + 'px';
+                that.foot.style.left = that.x * that.width + 'px';
+                that.foot.style.backgroundColor = 'red';
+                that.head.style.backgroundColor = '#999';
+                that.body.unshift( that.head );
+                that.head = that.foot;
+                that.foot = that.body.pop();
+                add( that.snake, map );
+                //判断能否吃到食物
+                if ( food.y == that.y && Math.abs(food.x - that.x) < 1 || food.x == that.x && Math.abs(food.y - that.y) < 1) {
+                    that.eat( Food, map );
+                }
+                //判断蛇的生死
+                if ( that.x < 0 || that.x > that.maxX || that.y < 0 || that.y > that.maxY ) {
+                    clearInterval( timer );
+                    alert('!');
+                    return;
+                }
+            }
+        }
+
+        //蛇吃食物
+        Snake.prototype.eat = function ( Food, map ) {
+            //食物变成头,头变成身子
+            food._div.style.backgroundColor = 'red';
+            this.head.style.backgroundColor = '#999';
+            this.body.unshift( this.head );
+            //
+            this.head = food._div;
+            add( this.snake, map );
+            //添加新的食物
+            food = new Food(map, this.maxX, this.maxY);
+        }
+
+        //食物
+        function Food ( map, maxX, maxY ) {
+            this.x = suiji( 0, maxX );
+            this.y = suiji( 0, maxY );
+            this.width = 20;
+            this.height = 20;
+            var div = document.createElement( 'div' );
+            div.className = 'dv';
+            div.style.left = this.x * this.width + 'px';
+            div.style.top = this.y * this.height + 'px';
+            var r = suiji( 0, 255 );
+            var g = suiji( 0, 255 );
+            var b = suiji( 0, 255 );
+            this.color = 'rgb('+ r +','+ g +','+ b +')';
+            div.style.backgroundColor = this.color;
+            map.appendChild( div );
+            this._div = div;
+        }
+
+        //产生随机数
+        function suiji(min, max) {
+            return Math.floor( Math.random() * (max - min + 1)) + min;
+        }
+
+        //添加身体到地图的函数
+        function add( arr, map ) {
+            map.appendChild( arr[0] );
+            arr[1].forEach( ( v ) => {
+                map.appendChild( v );
+            })
+            map.appendChild( arr[2] );
+        }
+
+        var snake = new Snake( container );
+        snake.init( container );
+        snake.move();
+        var food = new Food( container, snake.maxX, snake.maxY );
+        snake.sMove( container, Food );
+    </script>
+</body>
+</html>

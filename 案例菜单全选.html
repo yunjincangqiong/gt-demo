@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script src="common.js"></script>
+    <title></title>
+    <style>
+        table {
+            margin: 0 auto;
+            border: 1px solid oldlace;
+            border-collapse: collapse;
+        }
+
+        td {
+            width: 100px;
+            height: 30px;
+            border: 1px solid lemonchiffon;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <caption>皇家大菜单</caption>
+    <thead>
+    <tr>
+        <th>
+            <input name="all-check" type="checkbox" id="all-check"/>全选
+        </th>
+        <th>菜名</th>
+        <th>价格</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <input name="check" type="checkbox"/>选择
+        </td>
+        <td>红烧牛腩</td>
+        <td>30</td>
+    </tr>
+    <tr>
+        <td>
+            <input name="check" type="checkbox"/>选择
+        </td>
+        <td>澳洲龙虾</td>
+        <td>120</td>
+    </tr>
+    <tr>
+        <td>
+            <input name="check" type="checkbox"/>选择
+        </td>
+        <td>地三鲜</td>
+        <td>45</td>
+    </tr>
+    <tr>
+        <td>
+            <input name="check" type="checkbox"/>选择
+        </td>
+        <td>地四鲜</td>
+        <td>55</td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td>总计:</td>
+        <td colspan="2" id="money">0</td>
+    </tr>
+    </tfoot>
+</table>
+<script>
+    var inps = document.getElementsByName("check");
+    var moneySum = 0;
+    var moneySum1 = 0;
+    my$("all-check").onclick = function () {
+        if (this.checked == true) {
+            for (var x = 0; x < inps.length; x++) {
+                moneySum1 += parseFloat(inps[x].parentElement.nextElementSibling.nextElementSibling.innerText);
+                moneySum = moneySum1;
+            }
+            moneySum1 = 0;
+        } else {
+            moneySum = 0;
+        }
+        my$("money").innerText = moneySum;
+        for (var i = 0; i < inps.length; i++) {
+            inps[i].checked = this.checked;
+        }
+    };
+    for (var k = 0; k < inps.length; k++) {
+        inps[k].onclick = function () {
+            if (this.checked == true) {
+                moneySum += parseFloat(this.parentElement.nextElementSibling.nextElementSibling.innerText);
+            } else {
+                moneySum -= parseFloat(this.parentElement.nextElementSibling.nextElementSibling.innerText);
+            }
+            my$("money").innerText = moneySum;
+            var bool = true;
+            for (var j = 0; j < inps.length; j++) {
+                if (inps[j].checked != true) {
+                    bool = false;
+                    break;
+                }
+            }
+            my$("all-check").checked = bool;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <form action="javascript:;">
+    <input type="text" id="ipt">
+    <input type="submit" id="btn" value="搜索">
+  </form>
+  <button type="button" id="btn1">清除数据</button>
+  <p id="msg">没有更多数据</p>
+  <div id="wrapper"></div>
+  <script>
+    // 存贮搜索字符串的数组
+    var arr = [];
+
+    addLi();
+
+    function addLi() {
+      var keyWords = window.localStorage.getItem('keyWords');
+      if (keyWords) {
+        msg.style.display = 'none';
+        var str = '<ul>'
+        arr = JSON.parse(keyWords);
+        arr.forEach(function (v, i) {
+          str += '<li>' + v + '</li>';
+        });
+        str += '</ul>';
+        wrapper.innerHTML = str;
+      } else {
+        arr = [];
+        wrapper.innerHTML = '';
+        msg.style.display = '';
+      }
+    }
+
+    // 添加搜索历史
+    btn.onclick = function () {
+      // 重复关键字的索引
+      var index;
+      var text = ipt.value.trim();
+      if (text) {
+        if (arr.indexOf(text) === -1) {
+          arr.unshift(text);
+          window.localStorage.setItem('keyWords', JSON.stringify(arr));
+        } else if (index = arr.indexOf(text)) {
+          arr.splice(index, index + text.length);
+          arr.unshift(text);
+          window.localStorage.setItem('keyWords', JSON.stringify(arr));
+        }
+      }
+      ipt.value = '';
+      addLi();
+    }
+
+    // 清除所有数据
+    btn1.onclick = function () {
+      window.localStorage.clear();
+      addLi();
+    }
+  </script>
+</body>
+
+</html>

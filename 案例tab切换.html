@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        .box {
+            width: 400px;
+            height: 300px;
+            border: 1px solid #ccc;
+            margin: 100px auto;
+            overflow: hidden;
+        }
+
+        .hd {
+            height: 45px;
+        }
+
+        .hd span {
+            display: inline-block;
+            width: 90px;
+            background-color: pink;
+            line-height: 45px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .hd span.current {
+            background-color: purple;
+        }
+
+        .bd li {
+            height: 255px;
+            background-color: purple;
+            display: none;
+        }
+
+        .bd li.current {
+            display: block;
+        }
+    </style>
+
+</head>
+<body>
+<div class="box" id="box">
+    <div class="hd">
+        <span class="current">体育</span>
+        <span>娱乐</span>
+        <span>新闻</span>
+        <span>综合</span>
+    </div>
+    <div class="bd">
+        <ul>
+            <li class="current">我是体育模块</li>
+            <li>我是娱乐模块</li>
+            <li>我是新闻模块</li>
+            <li>我是综合模块</li>
+        </ul>
+    </div>
+</div>
+<script>
+    var div = document.getElementById("box");
+    var div1 = div.getElementsByTagName("div")[0];
+    var div2 = div.getElementsByTagName("div")[1];
+    var spans = div1.getElementsByTagName("span");
+    var lis = div2.getElementsByTagName("li");
+    for (var i = 0; i < spans.length; i++) {
+        spans[i].setAttribute("index",i);
+        spans[i].onclick = function () {
+            for(var j=0;j<spans.length;j++){
+                spans[j].removeAttribute("class");
+            }
+            this.className = "current";
+            var index = this.getAttribute("index");
+            for(var k=0;k<lis.length;k++ ){
+                lis[k].removeAttribute("class");
+            }
+            lis[index].className="current";
+        }
+    }
+</script>
+</body>
+</html>

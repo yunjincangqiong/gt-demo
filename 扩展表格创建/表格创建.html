@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<input type="button" value="生成表格" id="btn"/><br />
+<input type="button" value="添加" id="btnAdd"/><br />
+<div id="box">
+
+</div>
+<script src="common.js"></script>
+<script>
+    var heads=["姓名","科目","分数","操作"];
+    var datas = [
+        {"name":"乔峰","subject":"语文1","score":99.8},
+        {"name":"张三丰","subject":"语文2","score":80.8},
+        {"name":"张无忌","subject":"语文3","score":70.8},
+        {"name":"梅超风","subject":"语文4","score":100},
+        {"name":"黄老邪","subject":"语文5","score":60},
+        {"name":"凤姐","subject":"语文6","score":70},
+        {"name":"芙蓉姐姐","subject":"语文7","score":89.8}
+    ];
+
+    my$("btnAdd").onclick=addHandle;
+    function addHandle() {
+        //创建tr
+        var tr=document.createElement("tr");
+        var tbody=document.getElementById("tb").getElementsByTagName("tbody")[0];
+        tbody.appendChild(tr);
+        //生成列
+        for(var i=0;i<3;i++){
+            var td=document.createElement("td");
+            tr.appendChild(td);
+            td.innerHTML="<input type='text' value='' style='width: 60px' />";
+        }
+        var td=document.createElement("td");
+        tr.appendChild(td);
+        td.innerHTML="<a href='javascript:void(0);'>确定</a>&nbsp;<a href='javascript:void(0);'>取消</a>";
+        var linkCancel=getLastElement(td);
+        linkCancel.onclick=function () {
+            //移除当前的行
+            //tbody.removeChild(getLastElement(tbody));
+            tbody.removeChild(this.parentNode.parentNode);
+        };
+        //点击确定添加数据
+        var linkSure=getFirstElement(td);
+        linkSure.onclick=function () {
+            var name=tr.children[0].children[0].value;
+            var subject=tr.children[1].children[0].value;
+            var score=tr.children[2].children[0].value;
+            //把数据刷新到push中
+            datas.push({"name":name,"subject":subject,"score":score});
+            clickHandle();
+        };
+
+    }
+    my$("btn").onclick=clickHandle;
+    function clickHandle() {
+
+
+        //获取层
+        var dvObj=my$("box");
+
+        var table=dvObj.children[0];
+        if(table){
+            dvObj.removeChild(table);
+        }
+
+        //创建表格
+        table=document.createElement("table");
+        table.id="tb";
+        table.border="1";
+        table.style.width="400px";
+        //重合之后收缩
+        table.style.borderCollapse="collapse";
+        //表格添加到层中
+        dvObj.appendChild(table);
+        //生成表头
+        //生成thead兼容ie7=============================
+        var thead=document.createElement("thead");
+        table.appendChild(thead);
+        //============================================
+        var tr=document.createElement("tr");
+        //设置行高
+        tr.style.backgroundColor="#cccccc";
+        tr.style.height="50px";
+        //====================================
+        thead.appendChild(tr);//table.appendChild(tr);
+        //===========================================
+        for(var i=0;i<heads.length;i++){
+            var th=document.createElement("th");
+            tr.appendChild(th);
+            setInnerText(th,heads[i]);
+        }
+        //生成数据的时候使用tbody==============兼容ie7
+        var tbody=document.createElement("tbody");
+        table.appendChild(tbody);
+        //设置数据行的样式
+        tbody.style.textAlign="center";
+        //=============================================
+        for(var i=0;i<datas.length;i++){
+            tr=document.createElement("tr");
+            //tr添加到table
+            tbody.appendChild(tr);//table.appendChild(tr);
+            //创建td
+            for(var key in datas[i]){
+                var td=document.createElement("td");
+                tr.appendChild(td);
+                setInnerText(td,datas[i][key]);
+            }
+            //在添加一列
+            var td=document.createElement("td");
+            tr.appendChild(td);
+            //创建a标签
+            var link=document.createElement("a");
+            td.appendChild(link);
+            setInnerText(link,"删除");
+            link.href="javascript:void(0)";
+            link.onclick=clickHandle;
+        }
+        //删除行
+        function clickHandle() {
+            tbody.removeChild(this.parentNode.parentNode);
+        }
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {margin:0; padding: 0;}
+        ul {
+            list-style-type: none;
+        }
+        .box {
+            width: 400px;
+            height: 300px;
+            border: 1px solid #ccc;
+            margin: 100px auto;
+            overflow: hidden;
+        }
+        .hd {
+            height: 45px;
+        }
+        .hd span {
+            display:inline-block;
+            width: 90px;
+            background-color: pink;
+            line-height: 45px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .hd span.current {
+            background-color: purple;
+        }
+        .bd div {
+            height: 255px;
+            background-color: purple;
+            display: none;
+        }
+        .bd div.current {
+            display: block;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="box">
+        <div class="hd" id="hd">
+            <span data-index="0" class="current">体育</span>
+            <span data-index="1">娱乐</span>
+            <span data-index="2">新闻</span>
+            <span data-index="3">综合</span>
+        </div>
+        <div class="bd" id="bd">
+            <div class="current">我是体育模块</div>
+            <div>我是娱乐模块</div>
+            <div>我是新闻模块</div>
+            <div>我是综合模块</div>
+        </div>
+    </div>
+    <script>
+        var spans = document.querySelectorAll( '#hd span' ),
+            divs = document.querySelectorAll( '#bd div' ),
+            current = 0;
+        spans.forEach( ( v ) => {
+            //兼容默认选择的不是第一个的情况
+            if ( v.className.indexOf( 'current' ) != -1 ) {
+                current = v.getAttribute( 'data-index' );
+            }
+            //鼠标进入清除之前选中的项样式
+            v.onmouseover = function () {
+                spans[ current ].className = '';
+                divs[ current ].className = '';
+                //赋值当前的项的下标
+                current = this.getAttribute( 'data-index' );
+                this.className = 'current';
+                divs[ current ].className = 'current';
+            }
+        });
+    </script>
+</body>
+</html>

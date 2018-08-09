@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./myPage.css">
+</head>
+
+<body>
+
+  <div id="myPage">
+    <div class="page page1">111</div>
+    <div class="page page2">222</div>
+    <div class="page page3">333</div>
+  </div>
+
+  <script src="./js/jquery.js"></script>
+  <script src="./js/jquery.mousewheel.min.js"></script>
+  <script src="./myPage.js"></script>
+  <script>
+    $(function () {
+      $('myPage').myPage({sideBar: true});
+    });
+  </script>
+</body>
+
+</html>

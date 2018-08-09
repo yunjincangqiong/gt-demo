@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        div.banner {
+            margin: 200px;
+            position: relative;
+            border: 1px solid red;
+            width: 500px;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        div.banner div {
+            width: 30px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 50%;
+            margin-top: -25px;
+            color: white;
+            font-size: 35px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            display: none;
+        }
+
+        div.banner div#btn1 {
+            left: 0;
+        }
+
+        div.banner div#btn2 {
+            right: 0;
+        }
+
+        div.banner ul.imagesList {
+            position: absolute;
+            list-style: none;
+            width: 2500px;
+        }
+
+        ul.clearFlo::after {
+            content: '';
+            clear: both;
+        }
+
+        div.banner ul.imagesList li {
+            float: left;
+            display: block;
+        }
+
+        div.banner ul.imagesList li img{
+            width: 500px;
+            height: 300px;
+            display: block;
+        }
+
+        ul.imgIndexList {
+            position: absolute;
+            left: 50%;
+            top: 90%;
+            transform: translate( -50%, -50%);
+        }      
+        
+        ul.imgIndexList li.imgIndex {
+            float: left;
+            display: block;
+            width: 15px;
+            height: 15px;
+            margin: 0 5px;
+            border-radius: 50%; 
+            background-color: #aaa;
+        }
+
+        ul.imgIndexList li.now {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <ul class="imagesList clearFlo">
+            <li class="clone">
+                <a href="javascript:void(0);">
+                    <img src="./images/1.jpg" alt="图片一">
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">
+                    <img src="./images/2.jpg" alt="图片二">
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">
+                    <img src="./images/3.jpg" alt="图片三">
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">
+                    <img src="./images/4.jpg" alt="图片四">
+                </a>
+            </li>
+        </ul>
+        <ul class="imgIndexList clearFlo">
+            <li class="imgIndex now" data-index="1"></li>
+            <li class="imgIndex" data-index="2"></li>
+            <li class="imgIndex" data-index="3"></li>
+            <li class="imgIndex" data-index="4"></li>
+        </ul>
+        <div id="btn1">&lt;</div>
+        <div id="btn2">&gt;</div>
+    </div>
+    <script>
+        var ul = document.querySelector( 'ul.imagesList' ),
+            btn1 = document.querySelector( '#btn1' ),
+            btn2 = document.querySelector( '#btn2' ),
+            banner = document.querySelector( '.banner' ),
+            clone = document.querySelector( 'li.clone' ),
+            lis  = document.querySelectorAll( 'ul.imagesList li' ),
+            imgIndexList = document.querySelector( 'ul.imgIndexList' );
+            index = 0,
+            liWidth = clone.offsetWidth,
+            lis = imgIndexList.querySelectorAll( 'li' ),
+            timer = null;
+        ul.appendChild( clone.cloneNode(true) );
+
+        btn2.onclick = function () {
+            nextImage();
+        }
+
+        //切换下一张函数
+        function nextImage() {
+            var aim = - ( ++index * liWidth );
+            lis.forEach( ( v ) => {
+                v.classList.remove( 'now' ); 
+            });
+            if ( index >= 5 ) {
+                index = 0;
+                ul.style.left = '0';
+                aim = - ( ++index * liWidth );
+            }
+            if ( index >= 4 ) {
+                lis[0].classList.add( 'now' );
+            } else {
+                lis[index].classList.add( 'now' );
+            }
+            eleMove( ul, aim, 20 );
+        }
+
+        btn1.onclick = function () {
+            var aim = - ( --index * liWidth );
+            lis.forEach( ( v ) => {
+                v.classList.remove( 'now' ); 
+            });
+            if ( index < 0 ) {
+                index = 4;
+                ul.style.left = '-2000px';
+                aim = - ( --index * liWidth );
+            }
+            lis[index].classList.add( 'now' );
+            eleMove( ul, aim, 20 );
+        }
+
+        imgIndexList.onclick = function ( e ) {
+            if ( e.target.nodeName == 'LI' ) {
+                var target = e.target;
+                index = target.getAttribute( 'data-index' ) - 1;
+                var aim = - ( index * liWidth );
+                lis.forEach( ( v ) => {
+                    v.classList.remove( 'now' ); 
+                });
+                target.classList.add( 'now' );
+                eleMove( ul, aim, 20 );
+            }
+        }
+
+        //自动切换
+        var timer2 = setInterval( nextImage, 2000);
+
+        banner.onmouseover = function () {
+            clearInterval( timer2 );
+            btn1.style.display = 'block';
+            btn2.style.display = 'block';
+        }
+
+        banner.onmouseout = function () {
+            timer2 = setInterval( nextImage, 2000);
+            btn1.style.display = '';
+            btn2.style.display = '';
+        }
+
+        function eleMove( ele, aim, step ) {
+            if ( timer ) {
+                clearInterval( timer );
+            }
+            step = ele.offsetLeft < aim ? step : -step;
+            timer = setInterval( function () {
+                ele.style.left = ele.offsetLeft + step + 'px';
+                if ( Math.abs( ele.offsetLeft - aim ) <= Math.abs( step ) )  {
+                    ele.style.left = aim + 'px';
+                    clearInterval( timer );
+                }
+            }, 16);
+        }
+
+        function ctrlClassName( tag, className ) {
+          var arr = tag.className.split( ' ' );
+          var index = 0;
+          if ( (index = arr.indexOf( className )) !== -1 ) {
+            arr.splice( index, 1 );
+            tag.className = arr.join( ' ' );
+          } else {
+            arr.push( className );
+            tag.className = arr.join( ' ' );
+          }
+        }
+    </script>
+</body>
+</html>

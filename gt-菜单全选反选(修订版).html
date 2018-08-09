@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        table {
+            margin: 0 auto;
+            margin-top: 100px; 
+            border-collapse: collapse;
+        }
+
+        tr th, tr td {
+            padding: 10px;
+        }
+
+        tr:only-child {
+            background-color: #234;
+        }
+
+        /*table tbody tr:nth-child(odd){
+            background-color: #a12;
+        }
+
+        table tbody tr:nth-child(even){
+            background-color: #5ac;
+        }*/
+
+        table tbody tr:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <table border="1" id="table">
+        <caption>coco</caption>
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" name="seleAll" id="seleAll">
+                </th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    <input type="checkbox" name="sele" class="sele">
+                </th>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <th>
+                    <input type="checkbox" name="sele" class="sele">
+                </th>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <th>
+                    <input type="checkbox" name="sele" class="sele">
+                </th>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <th>
+                    <input type="checkbox" name="sele" class="sele">
+                </th>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" id="btn">反选</button>
+    <script>
+        //实现全选
+        var seleAll = document.querySelector( '#seleAll' ),
+            seles = document.querySelectorAll( '.sele' ),
+            btn = document.querySelector( '#btn' );
+        seleAll.onchange = function () {
+            var that = this;
+            seles.forEach( ( v ) => {
+                v.checked = that.checked;
+            });
+        }
+        //判断散项状态 确定全选按钮状态
+        function fn() {
+            var count = 0;
+            seles.forEach( ( v ) => {
+                count += v.checked ? 1 : 0;
+                seleAll.checked = count == seles.length ? true : false;
+            });
+        }
+        //实现散项选择
+        seles.forEach( ( v ) => {
+            v.onchange = function () {
+                fn();
+            }
+        });
+        //反选实现
+        btn.onclick = function () {
+            seles.forEach( ( v ) => {
+                v.checked = !v.checked;
+            });
+            fn();
+        }
+    </script>   
+</body>
+</html>
